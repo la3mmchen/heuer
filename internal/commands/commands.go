@@ -7,19 +7,38 @@ import (
 	"github.com/adlio/trello"
 	"github.com/la3mmchen/treta/internal/types"
 	"github.com/urfave/cli"
+	"github.com/xeonx/timeago"
 )
 
 const (
 	indent = " \\_ "
 )
 
-func list(cfg types.Configuration) cli.Command {
+func read(cfg types.Configuration) cli.Command {
 	cmd := cli.Command{
 		Name:  "read",
 		Usage: "Read all cards in configured list.",
 	}
 
+	cmd.Flags = []cli.Flag{
+		cli.StringSliceFlag{
+			Name:  "list, l",
+			Usage: "Trello lists to obtain cards from. Can be repeated for multiple lists.",
+			//Value: &cli.StringSlice{"tomorrow", "today"},
+		},
+	}
+
 	cmd.Action = func(c *cli.Context) error {
+		// do not do anything without any lists
+		if len(c.StringSlice("list")) == 0 {
+			fmt.Printf("Please provide name of lists you want to read cards of. \n")
+			return nil
+		}
+
+		// read from user provided flags
+		cfg.TrelloList = c.StringSlice("list")
+
+		// client object to interact with trello
 		client := trello.NewClient(cfg.TrelloAppKey, cfg.TrelloToken)
 
 		member, err := client.GetMember(cfg.TrelloUserName, trello.Defaults())
@@ -43,59 +62,53 @@ func list(cfg types.Configuration) cli.Command {
 				if err != nil {
 					log.Fatal(err)
 				}
-
+				var found bool = false
 				for _, x := range lists {
-					if x.Name == cfg.TrelloList {
-						fmt.Printf("cards in %v: \n", cfg.TrelloList)
-						list, err := client.GetList(x.ID, trello.Defaults())
-						if err != nil {
-							log.Fatal(err)
-						}
-
-						cards, err := list.GetCards(trello.Defaults())
-						if err != nil {
-							log.Fatal(err)
-						}
-
-						for _, y := range cards {
-							var out string
-							if y.DueComplete {
-								out += "[done] "
-							} else {
-								out += "[    ] "
-							}
-							out += y.Name
-
-							if y.Due != nil {
-								out += "\n" + indent + "Due to: " + y.Due.Format("_2 Jan 15:04 ")
+					for _, wantedList := range cfg.TrelloList {
+						if x.Name == wantedList {
+							found = true
+							fmt.Printf("cards in [%v]: \n", wantedList)
+							list, err := client.GetList(x.ID, trello.Defaults())
+							if err != nil {
+								log.Fatal(err)
 							}
 
-							if len(y.Desc) > 0 {
-								out += "\n" + indent + "Description: " + y.Desc
+							cards, err := list.GetCards(trello.Defaults())
+							if err != nil {
+								log.Fatal(err)
 							}
-							fmt.Printf("%v \n", out)
-							fmt.Printf("\n")
-							out = " "
 
+							for _, y := range cards {
+								var out string
+								if y.DueComplete {
+									out += "[done] "
+								} else {
+									out += "[    ] "
+								}
+								out += y.Name
+
+								if y.Due != nil {
+									out += "\n" + indent + "Due: " + timeago.English.Format(*y.Due)
+								}
+
+								if len(y.Desc) > 0 {
+									out += "\n" + indent + "Description: " + y.Desc
+								}
+								fmt.Printf("%v \n", out)
+								fmt.Printf("\n")
+								out = " "
+
+							}
+							fmt.Printf("___ \n")
 						}
-
 					}
-
 				}
-
+				if !found {
+					fmt.Printf("Sorry, the wanted lists are not found in your trello account.. \n")
+				}
 			}
 		}
-
-		fmt.Printf("\n")
-		fmt.Printf("\n")
-
-		fmt.Printf("\n")
-
-		fmt.Printf("\n")
-
 		return nil
 	}
 	return cmd
 }
-
-// id of board 58c28b28567dbf42d7819246
