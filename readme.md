@@ -1,6 +1,6 @@
 # treta
 
-a trello client to display one list of trello. I use it to access a list called `today` so i can see what I've got to do today.
+a command line cli to display one list of trello. I use it to access a list called `today` so i can see what I've got to do today.
 
 ## config & usage
 
