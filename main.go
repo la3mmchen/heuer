@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"os"
-	"path/filepath"
+
+	"os/user"
 
 	"github.com/la3mmchen/treta/internal/commands"
 	"github.com/la3mmchen/treta/internal/types"
@@ -25,9 +27,19 @@ func main() {
 		Debug:      "false",
 	}
 
+	user, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	homedir := user.HomeDir
+
+	if _, err := os.Stat(homedir + "/.treta/config.json"); err == nil {
+		configFile = homedir + "/.treta/config.json"
+	}
+
 	// load config if it is present
-	if _, err := os.Stat(filepath.Join(".", configFile)); !os.IsNotExist(err) {
-		file, err := os.Open(filepath.Join(".", configFile))
+	if _, err := os.Stat(configFile); err == nil {
+		file, err := os.Open(configFile)
 		decoder := json.NewDecoder(file)
 		err = decoder.Decode(&Cfg)
 		if err != nil {
