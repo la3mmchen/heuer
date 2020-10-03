@@ -9,6 +9,6 @@ type Configuration struct {
 	TrelloAppKey   string
 	TrelloUserName string
 	TrelloBoard    string
-	TrelloList     string
+	TrelloList     []string
 	Debug          string
 }

@@ -14,7 +14,6 @@ The config should look like this:
 {
     "TrelloUserName": "<your username>", // username is needed to retrieve your boards
     "TrelloBoard": "<board name>", // the board in which to search for the list; your user needs permission on this board
-    "TrelloList": "<name of the list>", // the list from which to print cards
     "TrelloAppKey": "...",
     "TrelloToken": "..."
 }
@@ -29,5 +28,5 @@ go build -o bin/treta
 And run it:
 
 ```bash
-./bin/treta read
+./bin/treta read -l today -l next
 ```
