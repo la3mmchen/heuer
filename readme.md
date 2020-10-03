@@ -10,9 +10,9 @@ You should end with an AppKey and a Token. Save them to an config file in your h
 
 The config should look like this: 
 
-```json
+```test
 {
-    "TrelloUserName": "<your username>", // username is needed to retrieve your boards
+    "TrelloUserName": "<your username>", // username is needed to retrieve your boards */
     "TrelloBoard": "<board name>", // the board in which to search for the list; your user needs permission on this board
     "TrelloAppKey": "...",
     "TrelloToken": "..."
