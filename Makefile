@@ -23,10 +23,10 @@ docker:
 	docker tag ${PROJECT}/${PROJECT_NAME}:${GIT_COMMIT} ${PROJECT}/${PROJECT_NAME}:latest
 
 run-help:
-	./${EXECUTABLE} --help
+	@./${EXECUTABLE} --help
 
 run-list:
-	./${EXECUTABLE} read
+	@./${EXECUTABLE} read
 
 docker-run:
 	docker run --rm -it ${PROJECT}/${PROJECT_NAME}:latest --help

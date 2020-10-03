@@ -9,6 +9,10 @@ import (
 	"github.com/urfave/cli"
 )
 
+const (
+	indent = " \\_ "
+)
+
 func list(cfg types.Configuration) cli.Command {
 	cmd := cli.Command{
 		Name:  "read",
@@ -42,6 +46,7 @@ func list(cfg types.Configuration) cli.Command {
 
 				for _, x := range lists {
 					if x.Name == cfg.TrelloList {
+						fmt.Printf("cards in %v: \n", cfg.TrelloList)
 						list, err := client.GetList(x.ID, trello.Defaults())
 						if err != nil {
 							log.Fatal(err)
@@ -53,7 +58,25 @@ func list(cfg types.Configuration) cli.Command {
 						}
 
 						for _, y := range cards {
-							fmt.Printf("card %v ; %v ; %v \n", y.Name, y.Desc, y.Due)
+							var out string
+							if y.DueComplete {
+								out += "[done] "
+							} else {
+								out += "[    ] "
+							}
+							out += y.Name
+
+							if y.Due != nil {
+								out += "\n" + indent + "Due to: " + y.Due.Format("_2 Jan 15:04 ")
+							}
+
+							if len(y.Desc) > 0 {
+								out += "\n" + indent + "Description: " + y.Desc
+							}
+							fmt.Printf("%v \n", out)
+							fmt.Printf("\n")
+							out = " "
+
 						}
 
 					}
