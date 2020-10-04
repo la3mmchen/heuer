@@ -5,22 +5,12 @@ import (
 	"github.com/urfave/cli"
 )
 
-var (
-	// TrelloToken <tbd>
-	TrelloToken string
-	// TrelloAppKey <tbd>
-	TrelloAppKey string
-	// List <tbd>
-	List string
-)
-
 // GetApp <tbd>
-func GetApp(cfg types.Configuration) *cli.App {
-
+func GetApp(cfg types.Configuration, version string) *cli.App {
 	app := cli.NewApp()
-	app.Name = cfg.AppName
-	app.Usage = cfg.AppUsage
-	app.Version = cfg.AppVersion
+	app.Name = "treta"
+	app.Usage = "A simple cli to print cards of a defined trello list"
+	app.Version = version
 
 	cli.VersionFlag = cli.BoolFlag{
 		Name:  "version, v",
