@@ -7,8 +7,8 @@ import (
 
 	"os/user"
 
-	"github.com/la3mmchen/treta/internal/commands"
-	"github.com/la3mmchen/treta/internal/types"
+	"github.com/la3mmchen/heuer/internal/commands"
+	"github.com/la3mmchen/heuer/internal/types"
 )
 
 var (
@@ -30,8 +30,8 @@ func main() {
 	}
 	homedir := user.HomeDir
 
-	if _, err := os.Stat(homedir + "/.treta/config.json"); err == nil {
-		configFile = homedir + "/.treta/config.json"
+	if _, err := os.Stat(homedir + "/.heuer/config.json"); err == nil {
+		configFile = homedir + "/.heuer/config.json"
 	}
 
 	// load config if it is present

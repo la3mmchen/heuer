@@ -1,4 +1,4 @@
-# treta
+# heuer
 
 a command line cli to display one list of trello. I use it to access a list called `today` so i can see what I've got to do today.
 
@@ -6,7 +6,7 @@ a command line cli to display one list of trello. I use it to access a list call
 
 First you need to setup a personal token to access your account via the trello API. Read at the trello documentation <https://trello.com/app-key>.
 
-You should end with an AppKey and a Token. Save them to an config file in your home folder (`~/.treta/config.json`) or at the directory you execute the binary.
+You should end with an AppKey and a Token. Save them to an config file in your home folder (`~/.heuer/config.json`) or at the directory you execute the binary.
 
 The config should look like this: 
 
@@ -22,11 +22,11 @@ The config should look like this:
 Build a go binary:
 
 ```bash
-go build -o bin/treta
+go build -o bin/heuer
 ```
 
 And run it:
 
 ```bash
-./bin/treta read -l today -l next
+./bin/heuer read -l today -l next
 ```

@@ -2,11 +2,12 @@ package commands
 
 import (
 	"fmt"
-	"github.com/xeonx/timeago"
 	"log"
 
+	"github.com/xeonx/timeago"
+
 	"github.com/adlio/trello"
-	"github.com/la3mmchen/treta/internal/types"
+	"github.com/la3mmchen/heuer/internal/types"
 	"github.com/urfave/cli"
 )
 

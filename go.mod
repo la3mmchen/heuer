@@ -1,4 +1,4 @@
-module github.com/la3mmchen/treta
+module github.com/la3mmchen/heuer
 
 go 1.13
 
