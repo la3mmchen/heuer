@@ -20,11 +20,8 @@ var (
 )
 
 func main() {
-	var Cfg = types.Configuration{
-		AppUsage:   "A simple cli to print cards of a defined trello list",
-		AppName:    "treta",
-		AppVersion: AppVersion,
-		Debug:      "false",
+	var cfg = types.Configuration{
+		Debug: "false",
 	}
 
 	user, err := user.Current()
@@ -41,13 +38,13 @@ func main() {
 	if _, err := os.Stat(configFile); err == nil {
 		file, err := os.Open(configFile)
 		decoder := json.NewDecoder(file)
-		err = decoder.Decode(&Cfg)
+		err = decoder.Decode(&cfg)
 		if err != nil {
 			os.Exit(1)
 		}
 	}
 
-	app := commands.GetApp(Cfg)
+	app := commands.GetApp(cfg, AppVersion)
 
 	if err := app.Run(os.Args); err != nil {
 		os.Exit(1)
